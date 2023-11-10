@@ -2,3 +2,7 @@
 	path = CLF.DotNet.Common
 	url = git@github.com:CentralLaserFacility/CLF.DotNet.Common.git
 	branch = main
+[submodule "ChannelAccessPlusPlus"]
+	path = ChannelAccessPlusPlus
+	url = git@github.com:TineZata/ChannelAccessPlusPlus.git
+	branch = main
