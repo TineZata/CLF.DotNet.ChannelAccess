@@ -64,8 +64,6 @@ namespace Clf.ChannelAccess
         ) ;
       }
 
-      Clf.ChannelAccess.EpicsDllFunctions.EnsureAvailable() ;
-
       try
       {
         

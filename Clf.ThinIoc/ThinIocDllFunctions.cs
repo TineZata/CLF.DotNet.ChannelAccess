@@ -253,7 +253,7 @@ namespace Clf.ThinIoc
       // TODO : this is necessary to ensure that the thin_ioc DLL is loaded,
       // but it would be better to bundle this into the ChannelAccess method ? 
       // HMM - THIS NEEDS TO BE DONE IN THE APP STARTUP CODE ... ????????????
-      Clf.ChannelAccess.EpicsDllFunctions.EnsureAvailable() ;
+      
       string pathToExeDirectory = System.IO.Path.GetDirectoryName(
         System.Reflection.Assembly.GetEntryAssembly()?.Location
       )! ;

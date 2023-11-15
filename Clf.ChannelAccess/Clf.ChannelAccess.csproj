@@ -31,7 +31,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CLF.DotNet.Common\Clf.Common\Clf.Common.csproj" />
-    <ProjectReference Include="..\Clf.EpicsDlls\Clf.EpicsDlls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CA.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="COM.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
