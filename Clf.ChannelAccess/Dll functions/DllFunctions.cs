@@ -92,6 +92,9 @@ namespace Clf.ChannelAccess.LowLevelApi
     // DEFINITELY WORTH A TRY.
     // 
 
+    // Useful atricle on cross platform DLL loading :
+    // https://learn.microsoft.com/en-us/dotnet/standard/native-interop/native-library-loading
+
     private const string CA_DLL_NAME = (
       "CA" 
     ) ;
