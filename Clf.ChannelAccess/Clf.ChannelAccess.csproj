@@ -31,21 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CLF.DotNet.Common\Clf.Common\Clf.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="CA.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="COM.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libCA.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="libCOM.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Clf.EpicsDlls\Clf.EpicsDlls.csproj" />
   </ItemGroup>
 
 </Project>

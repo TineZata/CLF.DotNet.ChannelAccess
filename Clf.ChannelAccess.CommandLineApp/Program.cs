@@ -25,6 +25,10 @@ namespace Clf_ChannelAccess_CommandLineApp
 
     public static async Task Main ( string[] args_notUsed )
     {
+      Clf.ChannelAccess.Settings.WhichDllsToUse = (
+        Clf.ChannelAccess.WhichDllsToUse.ClfDebugDlls 
+        // Clf.ChannelAccess.WhichDllsToUse.DaresburyReleaseDlls 
+      ) ;
       await Clf.ChannelAccess.CommandLineInterpreter_UsingSystemConsole.CreateInstanceAndExecuteAsync() ;
       // Clf.ChannelAccess.CommandLineInterpreter_UsingSystemConsole.CreateInstanceAndExecute(args) ;
     }

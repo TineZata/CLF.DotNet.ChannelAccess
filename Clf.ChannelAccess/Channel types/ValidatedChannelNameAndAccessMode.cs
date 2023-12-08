@@ -12,6 +12,12 @@ namespace Clf.ChannelAccess
     ValueAccessMode      ValueAccessMode 
   ) {
 
+    // public static implicit operator ChannelNameAndAccessMode ( string channelName )
+    // => new ChannelNameAndAccessMode(channelName) ;
+    // 
+    // public static implicit operator ChannelNameAndAccessMode ( ChannelName channelName )
+    // => new ChannelNameAndAccessMode(channelName) ;
+
     public override string ToString ( ) 
     => InternalHelpers.GetChannelNameAndAccessModeAsString(
       ValidatedChannelName,

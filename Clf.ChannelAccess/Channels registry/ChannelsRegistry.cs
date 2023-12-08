@@ -75,6 +75,18 @@ namespace Clf.ChannelAccess
       out channelFound
     ) ;
 
+    // public static IChannel? GetRegisteredChannelOrNull ( 
+    //   ChannelName      channelName,
+    //   ValueAccessMode? valueAccessMode
+    // ) {
+    //   // lock ( m_syncLock ) // NOT NECESSARY BECAUSE 'Values' returns a clone !!
+    //   {
+    //     return m_channelsMap.Values.Where(
+    //       activeChannel => activeChannel.ChannelNameAndAccessMode == channelNameAndAccessMode
+    //     ).FirstOrDefault() ;
+    //   }
+    // }
+
     public static bool HasRegisteredChannel ( 
       ChannelName      channelName, 
       ValueAccessMode? valueAccessMode = null 
