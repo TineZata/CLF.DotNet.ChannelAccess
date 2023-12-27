@@ -64,7 +64,7 @@ namespace Clf.ChannelAccess
         ) ;
       }
 
-      Clf.ChannelAccess.EpicsDllFunctions.EnsureAvailable() ;
+      //Clf.ChannelAccess.EpicsDllFunctions.EnsureAvailable() ;
 
       try
       {
