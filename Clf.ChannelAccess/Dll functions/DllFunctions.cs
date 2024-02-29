@@ -49,107 +49,10 @@ namespace Clf.ChannelAccess.LowLevelApi
 
     static DllFunctions ( )
     {
-      // EnsureDllFunctionsAvailable() ;
     }
 
     public static bool SetDllDirectoryHasBeenCalled {  get ; private set ; } = false ;
-    
-    public static string EpicsDllPath = "??EPICS_DLL_PATH??" ;
 
-    // Hah ! A call to 'GetExecutingAssembly' doesn't necessarily get you the assembly
-    // that's actually executing, depengin on what the JIT compiler has been doing ...
-    // https://cardano.github.io/blog/2017/04/25/thinking-of-using-GetCallingAssembly
-    // public static string PathToChannelAccessAssemblyDirectory => System.IO.Path.GetDirectoryName(
-    //   System.Reflection.Assembly.GetExecutingAssembly().Location 
-    // )! ;
-
-    // public static string PathToChannelAccessAssemblyDirectory => System.IO.Path.GetDirectoryName(
-    //   System.Reflection.Assembly.GetAssembly(
-    //     typeof(DllFunctions)
-    //   )!.Location 
-    // )! ;
-
-    public static void EnsureDllFunctionsAvailable ( )
-    { 
-      if ( ! SetDllDirectoryHasBeenCalled )
-      {
-        // The directory that contains the 'exe' we're running will also contain
-        // the assemblies it depends on, such as 'Clf.ChannelAccess.dll'. The DLL's required by 
-        // ChannelAccess (ie com, ca) will have been copied into directories beneath the one
-        // that holds the ChannelAccess dll itself, ie the 'exe' directory.
-        // That's because the 'ChannelAccess' project references the 'Clf.EpicsDlls' project.
-        string pathToExeDirectory = System.IO.Path.GetDirectoryName(
-          System.Reflection.Assembly.GetEntryAssembly()?.Location 
-        )! ;
-        EpicsDllPath = (
-          Clf.ChannelAccess.Settings.WhichDllsToUse switch {
-            WhichDllsToUse.DaresburyReleaseDlls                     => pathToExeDirectory + @"\DaresburyDlls_Release",
-            WhichDllsToUse.ClfDebugDlls                             => pathToExeDirectory + @"\EpicsDlls_Debug",
-            WhichDllsToUse.ClfDebugDlls_FromEpicsBuildInLocalRepo   => Clf.Common.PathUtilities.RootDirectoryHoldingDotNetGithubRepos + @"epics.dotnet\x64\Debug_DLL",
-            WhichDllsToUse.ClfReleaseDlls_FromEpicsBuildInLocalRepo => Clf.Common.PathUtilities.RootDirectoryHoldingDotNetGithubRepos + @"epics.dotnet\x64\Release_DLL",
-            _  => throw new UnexpectedConditionException($"Dll's for {Clf.ChannelAccess.Settings.WhichDllsToUse} not found")
-          }
-        ) ;
-        System.IO.Directory.Exists(EpicsDllPath).Should().BeTrue() ;
-        Clf.Common.Win32.SetDllDirectory(
-          EpicsDllPath
-        ) ;
-        SetDllDirectoryHasBeenCalled = true ;
-        Clf.ChannelAccess.Hub.HandleInformationalMessage(
-          $"EpicsDllPath has been set to {EpicsDllPath}"
-        ) ;
-
-        VerifyCanLoadDll("com") ;
-        VerifyCanLoadDll("ca") ;
-
-        if ( EpicsDllPath.Contains("Daresbury") )
-        {
-          // ThinIoc not supported with the Daresbury DLL's
-          // as they've been built with a runtime library
-          // that's incompatible with the one used
-          // by thin_ioc.dll ?
-        }
-        else
-        {
-          // If we're using the 'CLF' DLL's, let's verify
-          // that the support DLL for 'thin_ioc' is also available.
-          // If for some reason it isn't, and an attempt is made
-          // to invoke 'thin_ioc' functions, Windows would bring up
-          // an unhelpful dialog saying that DLL can't be loaded.
-          // Better to detect that issue earlier ...
-          VerifyCanLoadDll("thin_ioc") ;
-        }
-
-      }
-    }
-
-    private static void VerifyCanLoadDll ( string dllName )
-    {
-      // Verify that we can successfully load the COM library.
-      var hDll = Clf.Common.Win32.LoadLibrary(dllName) ;
-      // Just to check that 'GetLastErrorAsString' returns the expected value.
-      string errorAsString_126 = Clf.Common.Win32.GetLastErrorAsString(126) ;
-      if ( hDll == System.IntPtr.Zero )
-      {
-        // If the dll fails to load, we typically find that 'GetLastError'
-        // returns 126 which corresponds to 'The specified module could not be found'.
-        // That's not particularly helpful, but one of the reasons for failure is that the required
-        // runtime libraries on which the COM dll depends, might not be available on the system.
-        // The 'Clf' DLL's have been built with VS2022 Preview configured to use the v143 C libraries.
-        // Installing VS2022 with the 'C++ Desktop' workload seems to fix the problem.
-        var errorCode = Clf.Common.Win32.GetLastError() ;
-        string errorAsString = Clf.Common.Win32.GetLastErrorAsString(errorCode) ;
-        string message = $"Failed to load '{dllName}' DLL from '{EpicsDllPath}' ; Error = {errorCode} ; '{errorAsString}'" ;
-        Clf.ChannelAccess.Hub.HandleInformationalMessage(message) ;
-        throw new UnexpectedConditionException(message) ;
-      }
-      else
-      {
-        Clf.ChannelAccess.Hub.HandleInformationalMessage(
-          $"{dllName}.dll has been successfully loaded from {EpicsDllPath}"
-        ) ;
-      }
-    }
 
     //
     // Exporting from a DLL Using __declspec(dllexport)
