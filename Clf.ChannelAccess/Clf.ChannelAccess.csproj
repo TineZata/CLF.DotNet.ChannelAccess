@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateProgramFile>false</GenerateProgramFile>
     <Nullable>enable</Nullable>
@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CLF.DotNet.Common\Clf.Common\Clf.Common.csproj" />
-    <ProjectReference Include="..\Clf.EpicsDlls\Clf.EpicsDlls.csproj" />
   </ItemGroup>
 
   <ItemGroup>
